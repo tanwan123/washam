@@ -1,0 +1,20 @@
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* @import "tailwindcss"; */
+/* Utility helpers for large hero background text */
+.hero-title-shadow {
+font-weight: 800;
+letter-spacing: -0.02em;
+}
+
+
+/* small helper to mimic watermark background text */
+.watermark {
+font-size: 8rem;
+opacity: 0.06;
+font-weight: 900;
+line-height: 1;
+}

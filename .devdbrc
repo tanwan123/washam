@@ -1,0 +1,6 @@
+[
+  {
+    "type": "sqlite",
+    "path": "/home/jesse/washam/database/database.sqlite"
+  }
+]
