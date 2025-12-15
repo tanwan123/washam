@@ -9,10 +9,7 @@ use App\Http\Middleware\middleware;
 
 class CollectorController extends Controller
 {
-    public function __construct()
-    {
-        $this->middleware(['auth','collector']);
-    }
+   
 
     // dashboard - show assigned orders and their statuses
     public function index()

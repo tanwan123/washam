@@ -15,7 +15,7 @@ return Application::configure(basePath: dirname(__DIR__))
            // Your existing alias registration
         $middleware->alias([
             'admin' => \App\Http\Middleware\AdminMiddleware::class,
-
+            'collector' => \App\Http\Middleware\CollectorMiddleware::class,
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions): void {
