@@ -26,7 +26,9 @@ class LoginController extends Controller
             if (Auth::user()->admin == 1) {
                 return redirect()->route('admin.dashboard');
             }
-
+            if (Auth::user()->isCollector()) {
+                return redirect()->route('collector.dashboard');
+            }
             return redirect()->route('home');
         }
 
