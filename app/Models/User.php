@@ -34,11 +34,20 @@ class User extends Authenticatable
         'password',
         'remember_token',
     ];
-    
+
     // convenience helpers
-    public function isAdmin(): bool { return $this->role === 'admin'; }
-    public function isCollector(): bool { return $this->role === 'collector'; }
-    public function isCustomer(): bool { return $this->role === 'customer'; }
+    public function admin(): bool
+    {
+        return $this->role === 'admin';
+    }
+    public function customer(): bool
+    {
+        return $this->role === 'customer';
+    }
+    public function collector(): bool
+    {
+        return $this->role === 'collector';
+    }
 
     /**
      * Get the attributes that should be cast.
@@ -53,5 +62,4 @@ class User extends Authenticatable
             'admin' => 'boolean'
         ];
     }
-
 }

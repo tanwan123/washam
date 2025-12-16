@@ -23,9 +23,10 @@ class AdminController extends Controller
 
     public function orders()
     {
-        $orders = Order::all();
+        $orders = Order::latest()->get(); 
         return view('admin.orders', compact('orders'));
     }
+
 
     public function services()
     {

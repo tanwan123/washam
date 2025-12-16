@@ -9,9 +9,10 @@ use App\Http\Controllers\CartController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\Admin\ServiceController;
-use App\Http\Controllers\ServicesController;
-use App\Http\Controllers\ServiceOrderController;
+use App\Http\Controllers\ServicesController; 
 use App\Http\Controllers\CollectorController;
+use App\Http\Controllers\Admin\OrderController as AdminOrderController;
+use App\Http\Controllers\ServiceOrderController; 
 
 
 use Illuminate\Support\Facades\Auth;
@@ -121,6 +122,9 @@ Route::prefix('admin')
         Route::get('/customers', [AdminController::class, 'customers'])->name('customers');
         Route::get('/orders', [AdminController::class, 'orders'])->name('orders');
         Route::get('/settings', [AdminController::class, 'settings'])->name('settings');
+Route::get('/admin/orders', [AdminOrderController::class, 'index'])
+    ->middleware(['auth','admin'])
+    ->name('admin.orders');
 
         /*
         |--------------------------------------------------------------------------
@@ -135,8 +139,15 @@ Route::prefix('admin')
 // Collector routes
 Route::prefix('collector')->middleware(['auth','collector'])->name('collector.')->group(function(){
     Route::get('/dashboard', [CollectorController::class,'index'])->name('dashboard');
+      Route::get('/orders', [CollectorController::class, 'orders'])->name('orders'); 
+       Route::get('/completed', [CollectorController::class, 'completedOrders'])->name('completed'); 
     Route::post('/order/{order}/pickup', [CollectorController::class,'markPickedUp'])->name('order.pickup');
     Route::post('/order/{order}/deliver', [CollectorController::class,'markDelivered'])->name('order.deliver');
+    Route::get('/collector/pickups', [CollectorController::class, 'pickups'])
+    ->middleware(['auth','collector'])
+    ->name('collector.pickups');
+
+    
 });
 
 // Admin assign collector

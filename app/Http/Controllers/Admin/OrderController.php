@@ -12,10 +12,13 @@ class OrderController extends Controller
         $this->middleware('admin');
     }
 
-    public function index()
+     public function index()
     {
-        $orders = Order::with('user','items')->latest()->paginate(20);
-        return view('admin.orders.index', compact('orders'));
+        $orders = Order::with('items','user')
+            ->latest()
+            ->get();
+
+        return view('admin.orders', compact('orders'));
     }
 
     public function show(Order $order)

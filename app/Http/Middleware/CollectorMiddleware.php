@@ -9,7 +9,7 @@ class CollectorMiddleware
 {
     public function handle(Request $request, Closure $next)
     {
-        if (Auth::check() && Auth::user()->isCollector()) {
+        if (Auth::check() && Auth::user()->Collector()) {
             return $next($request);
         }
         abort(403, 'Unauthorized');

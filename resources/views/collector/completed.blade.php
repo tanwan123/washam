@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>My Pickups</title>
+    <title>Completed Orders</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
@@ -39,37 +39,17 @@
                         <tr>
                             <th class="p-4">Order #</th>
                             <th class="p-4">Customer</th>
-                            <th class="p-4">Status</th>
-                            <th class="p-4">Action</th>
+                            <th class="p-4">Delivery Address</th>
                         </tr>
                     </thead>
                     <tbody class="divide-y">
-                        @forelse($assignedOrders as $order)
+                        @foreach($completedOrders as $order)
                             <tr>
                                 <td class="p-4 font-semibold">#{{ $order->id }}</td>
                                 <td class="p-4">{{ $order->user->name }}</td>
-                                <td class="p-4">{{ $order->status }}</td>
-                                <td class="p-4">
-                                    @if($order->status === 'Pending')
-                                        <form method="POST" action="{{ route('collector.order.pickup', $order->id) }}">
-                                            @csrf
-                                            <button class="bg-orange-600 text-white px-4 py-2 rounded-lg">Pick Up</button>
-                                        </form>
-                                    @elseif($order->status === 'Picked Up')
-                                        <form method="POST" action="{{ route('collector.order.deliver', $order->id) }}">
-                                            @csrf
-                                            <button class="bg-green-600 text-white px-4 py-2 rounded-lg">Deliver</button>
-                                        </form>
-                                    @else
-                                        <span class="text-gray-400">Completed</span>
-                                    @endif
-                                </td>
+                                <td class="p-4">{{ $order->delivery_address }}</td>
                             </tr>
-                        @empty
-                            <tr>
-                                <td colspan="4" class="p-6 text-center text-gray-500">No pickups available.</td>
-                            </tr>
-                        @endforelse
+                        @endforeach
                     </tbody>
                 </table>
             </div>
