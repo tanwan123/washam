@@ -4,33 +4,30 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Order;
+use Illuminate\Http\Request;
 
 class OrderController extends Controller
 {
-    public function __construct()
-    {
-        $this->middleware('admin');
-    }
+  public function index()
+{
+    $orders = Order::with('customer', 'items', 'collector')
+        ->latest()
+        ->get();
 
-     public function index()
-    {
-        $orders = Order::with('items','user')
-            ->latest()
-            ->get();
+    return view('admin.orders', compact('orders'));
+}
 
-        return view('admin.orders', compact('orders'));
-    }
-
-    public function show(Order $order)
+    public function assignCollector(Request $request, Order $order)
     {
-        $order->load('user','items');
-        return view('admin.orders.show', compact('order'));
-    }
+        $request->validate([
+            'collector_id' => 'required|exists:users,id',
+        ]);
 
-    public function updateStatus(Request $request, Order $order)
-    {
-        $request->validate(['status'=>'required|string']);
-        $order->update(['status'=>$request->status]);
-        return redirect()->back()->with('success','Status updated');
+        $order->update([
+            'collector_id' => $request->collector_id,
+            'status' => 'assigned',
+        ]);
+
+        return redirect()->back()->with('success', 'Collector assigned successfully.');
     }
 }

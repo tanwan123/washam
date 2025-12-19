@@ -5,60 +5,93 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Order;
 use Illuminate\Support\Facades\Auth;
-use App\Http\Middleware\middleware;
-
 
 class CollectorController extends Controller
 {
- public function pickups()
+    // Show all pickups with 'pending' status
+    public function pickups()
     {
-        $orders = Order::where('status','pending')
-            ->with('user','items')
+        $orders = Order::where('status', 'pending')
+            ->with('user', 'items') // Eager load user and items relationships
             ->get();
 
         return view('collector.pickups', compact('orders'));
     }
 
-    // dashboard - show assigned orders and their statuses
+    // Show assigned orders and their statuses
     public function orders()
     {
         // Fetch all assigned orders for the authenticated collector
         $assignedOrders = Order::where('collector_id', Auth::id())
-            ->where('status', 'Pending') // Adjust this filter as necessary
+            ->whereIn('status', ['assigned', 'pending']) // Include both 'assigned' and 'pending'
+            ->with('user', 'items') // Eager load relationships
             ->get();
 
-        return view('collector.orders', compact('assignedOrders')); // Pass it to the view
+        return view('collector.orders', compact('assignedOrders')); // Pass assigned orders to the view
     }
+
+    // Show completed orders
     public function completedOrders()
     {
         $completedOrders = Order::where('collector_id', Auth::id())
-            ->where('status', 'Completed') // Adjust this as per your completed status
-            ->latest()
+            ->where('status', 'completed') // Filter for completed orders
+            ->latest() // Order by latest first
+            ->with('user', 'items') // Eager load relationships
             ->get();
 
-        return view('collector.completed', compact('completedOrders'));
+        return view('collector.completed', compact('completedOrders')); // Pass completed orders to the view
     }
 
+    // Dashboard for the collector
     public function index()
     {
         $collectorId = auth()->id();
 
-        $assignedOrders = Order::where('collector_id', $collectorId)->get();
-        $pickedOrders   = Order::where('collector_id', $collectorId)->where('status', 'Picked Up')->get();
-        $deliveredOrders = Order::where('collector_id', $collectorId)->where('status', 'Delivered')->get();
+        // Fetch different types of orders for the collector
+        $assignedOrders = Order::where('collector_id', $collectorId)
+            ->whereIn('status', ['assigned', 'pending']) // Fetch assigned and pending orders
+            ->with('user', 'items') // Eager load relationships
+            ->get();
+
+        $pickedOrders = Order::where('collector_id', $collectorId)
+            ->where('status', 'picked-up') // Fetch picked up orders
+            ->with('user', 'items') // Eager load relationships
+            ->get();
+
+        $deliveredOrders = Order::where('collector_id', $collectorId)
+            ->where('status', 'delivered') // Fetch delivered orders
+            ->with('user', 'items') // Eager load relationships
+            ->get();
 
         return view('collector.dashboard', compact(
             'assignedOrders',
             'pickedOrders',
             'deliveredOrders'
-        ));
+        )); // Pass all order types to the dashboard view
     }
 
-    // mark delivered
+    // Mark an order as delivered
     public function markDelivered(Order $order)
     {
-        if ($order->collector_id !== Auth::id()) abort(403);
+        // Ensure the authenticated collector is assigned to the order
+        if ($order->collector_id !== Auth::id()) {
+            abort(403); // Unauthorized access
+        }
+
+        // Update the order status to 'delivered'
         $order->update(['status' => 'delivered']);
-        return response()->json(['success' => true, 'status' => 'delivered']);
+
+        return response()->json(['success' => true, 'status' => 'delivered']); // Return success response
+    }
+
+    // (NEW) Show requests assigned to the collector
+    public function myRequests()
+    {
+        $orders = Order::where('collector_id', Auth::id())
+            ->whereIn('status', ['assigned', 'pending']) // Fetch orders assigned to the collector
+            ->with('user', 'items') // Eager load relationships
+            ->get();
+
+        return view('collector.my_requests', compact('orders')); // Pass to the view
     }
 }

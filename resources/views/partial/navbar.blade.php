@@ -27,12 +27,12 @@
                 </a>
 
                 @auth
-                <a href="{{ route('orders.create') }}" 
+                <a href="{{ route('orders.pickup.form') }}" 
                    class="{{ request()->is('request-pickup') ? 'text-orange-600 font-semibold border-b-2 border-orange-600' : 'text-gray-700 hover:text-orange-600 hover:border-b-2 hover:border-orange-600' }} transition duration-200 pb-1">
                     Request Pickup
                 </a>
 
-                <a href="{{ route('orders.my') }}" 
+                <a href="{{ route('orders.my-requests') }}" 
                    class="{{ request()->is('my-requests') ? 'text-orange-600 font-semibold border-b-2 border-orange-600' : 'text-gray-700 hover:text-orange-600 hover:border-b-2 hover:border-orange-600' }} transition duration-200 pb-1">
                     My Requests
                 </a>

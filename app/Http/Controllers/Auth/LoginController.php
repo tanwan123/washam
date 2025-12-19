@@ -8,39 +8,35 @@ use Illuminate\Support\Facades\Auth;
 
 class LoginController extends Controller
 {
-    public function showLoginForm()
-    {
-        return view('auth.login');
-    }
+   public function login(Request $request)
+{
+    $credentials = $request->validate([
+        'email' => 'required|email',
+        'password' => 'required',
+    ]);
 
-    public function login(Request $request)
-    {
-        $credentials = $request->validate([
-            'email' => 'required|email',
-            'password' => 'required',
-        ]);
+    if (Auth::attempt($credentials)) {
+        $request->session()->regenerate();
 
-        if (Auth::attempt($credentials)) {
-            $request->session()->regenerate();
+        $user = Auth::user();
 
-            if (Auth::user()->admin == 1) {
-                return redirect()->route('admin.dashboard');
-            }
-            if (Auth::user()->Collector()) {
-                return redirect()->route('collector.dashboard');
-            }
-            return redirect()->route('home');
+        // ADMIN
+        if ($user->admin == 1) {
+            return redirect()->route('admin.dashboard');
         }
 
-        return back()->withErrors(['email' => 'Invalid credentials provided.']);
+        // COLLECTOR
+        if ($user->role === 'collector') {
+            return redirect()->route('collector.dashboard');
+        }
+
+        // CUSTOMER
+        return redirect()->route('home');
     }
 
-    public function logout(Request $request)
-    {
-        Auth::logout();
-        $request->session()->invalidate();
-        $request->session()->regenerateToken();
+    return back()->withErrors([
+        'email' => 'Invalid credentials provided.',
+    ]);
+}
 
-        return redirect()->route('login');
-    }
 }

@@ -26,7 +26,7 @@
         </div>
 
         <!-- Book Pickup Button -->
-        <a href="{{ route('order.create') }}" 
+        <a href="{{ route('orders.my-requests') }}" 
            class="mt-4 inline-block bg-orange-600 text-white font-bold text-lg px-10 py-4 rounded-xl shadow-lg hover:bg-orange-700 transition transform hover:scale-105">
             Book Pickup
         </a>
@@ -131,7 +131,7 @@
                     <span class="text-4xl font-extrabold text-orange-600">$12</span>
                     <span class="text-gray-500">/ Bag</span>
                 </div>
-                <a href="{{ route('order.create') }}?plan=basic" class="block w-full bg-orange-100 text-orange-700 font-semibold py-3 rounded-lg hover:bg-orange-200 transition">
+                <a href="{{ route('orders.pickup.form') }}?plan=basic" class="block w-full bg-orange-100 text-orange-700 font-semibold py-3 rounded-lg hover:bg-orange-200 transition">
                     Select Basic
                 </a>
             </div>
@@ -145,7 +145,7 @@
                     <span class="text-5xl font-extrabold text-white">$37</span>
                     <span class="text-orange-200">/ Month</span>
                 </div>
-                <a href="{{ route('order.create') }}?plan=regular" class="block w-full bg-white text-orange-700 font-extrabold py-4 rounded-lg hover:bg-orange-100 transition shadow-lg">
+                <a href="{{ route('orders.pickup.form') }}?plan=regular" class="block w-full bg-white text-orange-700 font-extrabold py-4 rounded-lg hover:bg-orange-100 transition shadow-lg">
                     Go Premium
                 </a>
             </div>
@@ -158,7 +158,7 @@
                     <span class="text-4xl font-extrabold text-orange-600">$78</span>
                     <span class="text-gray-500">/ Month</span>
                 </div>
-                <a href="{{ route('order.create') }}?plan=mega" class="block w-full bg-orange-100 text-orange-700 font-semibold py-3 rounded-lg hover:bg-orange-200 transition">
+                <a href="{{ route('orders.pickup.form') }}?plan=mega" class="block w-full bg-orange-100 text-orange-700 font-semibold py-3 rounded-lg hover:bg-orange-200 transition">
                     Select VIP
                 </a>
             </div>

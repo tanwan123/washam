@@ -12,7 +12,7 @@
       <h4 class="text-xl font-semibold text-white mb-4">Quick Links</h4>
       <ul class="space-y-2">
         <li><a href="{{ route('services') }}" class="hover:text-green-400 transition">Services</a></li>
-        <li><a href="{{ route('orders.index') }}" class="hover:text-green-400 transition">My Orders</a></li>
+        <li><a href="{{ route('orders.pickup.form') }}" class="hover:text-green-400 transition">My Orders</a></li>
         <li><a href="{{ route('about') }}" class="hover:text-green-400 transition">About Us</a></li>
         <li><a href="{{ route('contact') }}" class="hover:text-green-400 transition">Contact</a></li>
       </ul>
